@@ -2,9 +2,9 @@ package extend
 
 import (
 	"github.com/jinzhu/gorm"
+	"github.com/zpdev/zins-extension/orm"
 	"github.com/zpdev/zins/model"
 	"github.com/zpdev/zins/product/app"
-	"github.com/zpdev/zins_extension/orm"
 )
 
 var db *gorm.DB
