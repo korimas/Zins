@@ -34,7 +34,11 @@ func (service *userService) CreateUser(db *gorm.DB, user *model.User) *errutils.
 
 func (service *userService) GetUsers(db *gorm.DB) ([]*model.User, *errutils.ZinError) {
 	users := make([]*model.User, 0)
-	if db.Find(&users).RecordNotFound() {
+	columns := []string{
+		"Username", "Email", "Nickname",
+		"Avatar", "home_page", "Description",
+		"Status", "Roles", "created_at"}
+	if db.Select(columns).Find(&users).RecordNotFound() {
 		return nil, errutils.DBOperationsFailed()
 	} else {
 		return users, nil
@@ -42,8 +46,12 @@ func (service *userService) GetUsers(db *gorm.DB) ([]*model.User, *errutils.ZinE
 }
 
 func (service *userService) GetUser(db *gorm.DB, username string) (*model.User, *errutils.ZinError) {
+	columns := []string{
+		"Username", "Email", "Nickname",
+		"Avatar", "home_page", "Description",
+		"Status", "Roles", "created_at"}
 	var user model.User
-	if db.Where("Username = ?", username).First(&user).RecordNotFound() {
+	if db.Select(columns).Where("Username = ?", username).First(&user).RecordNotFound() {
 		return nil, errutils.UserNotFound(username)
 	}
 	return &user, nil
