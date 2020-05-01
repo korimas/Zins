@@ -1,6 +1,7 @@
 package service
 
 import (
+	"encoding/base64"
 	"github.com/jinzhu/gorm"
 	"github.com/zpdev/zins/common/errutils"
 	"github.com/zpdev/zins/common/utils"
@@ -17,7 +18,11 @@ func (service *authService) Login(db *gorm.DB, user *model.User) (*model.User, *
 	if db.Where("Username = ?", user.Username).First(&loginUser).RecordNotFound() {
 		return nil, errutils.UserNotFound(user.Username)
 	}
-	result, err := utils.VerifyPassphrase(user.Password, []byte(loginUser.Password))
+	encryptPass, enErr := base64.StdEncoding.DecodeString(loginUser.Password)
+	if enErr != nil {
+		return nil, errutils.PasswordVerifyError()
+	}
+	result, err := utils.VerifyPassphrase(user.Password, encryptPass)
 	if err != nil {
 		return nil, errutils.PasswordVerifyError()
 	}

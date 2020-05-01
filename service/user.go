@@ -1,6 +1,7 @@
 package service
 
 import (
+	"encoding/base64"
 	mapset "github.com/deckarep/golang-set"
 	"github.com/jinzhu/gorm"
 	"github.com/zpdev/zins/common/errutils"
@@ -28,7 +29,8 @@ func (service *userService) CreateUser(db *gorm.DB, user *model.User) *errutils.
 	if err != nil {
 		return errutils.PasswordEncryptError()
 	}
-	user.Password = utils.B2str(encryptedPass)
+	user.Password = base64.StdEncoding.EncodeToString(encryptedPass)
+	//user.Password = utils.B2str(encryptedPass)
 	user.CreatedAt = time.Now().Unix()
 	user.Status = "Active"
 	if err := db.Create(user).Error; err != nil {
