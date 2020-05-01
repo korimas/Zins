@@ -14,9 +14,11 @@ type UserRes struct {
 }
 
 func (res *UserRes) Get() *api.Response {
-	var user model.User
-	extend.DB().First(&user, "username = ?", "zpzhou")
-	return api.NormalResponse(user)
+	users, err := service.UserService.GetUsers(extend.DB())
+	if err != nil {
+		return api.ErrorResponse(err)
+	}
+	return api.NormalResponse(users)
 }
 
 func (res *UserRes) Post() *api.Response {
@@ -43,9 +45,13 @@ type UserDetailRes struct {
 	Ctx iris.Context
 }
 
-func (res *UserDetailRes) Get() (int, error) {
+func (res *UserDetailRes) Get() *api.Response {
 	username := res.Ctx.Params().Get("username")
-	return res.Ctx.JSON(iris.Map{"user_detail_get": username})
+	user, err := service.UserService.GetUser(extend.DB(), username)
+	if err != nil {
+		return api.ErrorResponse(err)
+	}
+	return api.NormalResponse(user)
 }
 
 func (res *UserDetailRes) Post() (int, error) {
