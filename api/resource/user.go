@@ -32,8 +32,15 @@ func (res *UserRes) Post() *api.Response {
 	return api.NormalResponse(user)
 }
 
-func (res *UserRes) Delete() (int, error) {
-	return res.Ctx.JSON(iris.Map{"user": "delete"})
+func (res *UserRes) Delete() *api.Response {
+	var users []model.User
+	if err := res.Ctx.ReadJSON(&users); err != nil {
+		return api.ErrorResponse(errutils.JsonFormatError())
+	}
+	if err := service.UserService.DeleteUsers(extend.DB(), users); err != nil {
+		return api.ErrorResponse(err)
+	}
+	return api.NormalResponse(nil)
 }
 
 func (res *UserRes) Put() (int, error) {
@@ -54,12 +61,12 @@ func (res *UserDetailRes) Get() *api.Response {
 	return api.NormalResponse(user)
 }
 
-func (res *UserDetailRes) Post() (int, error) {
-	return res.Ctx.JSON(iris.Map{"user_detail": "post"})
-}
-
-func (res *UserDetailRes) Delete() (int, error) {
-	return res.Ctx.JSON(iris.Map{"user_detail": "delete"})
+func (res *UserDetailRes) Delete() *api.Response {
+	username := res.Ctx.Params().Get("username")
+	if err := service.UserService.DeleteUser(extend.DB(), username); err != nil {
+		return api.ErrorResponse(err)
+	}
+	return api.NormalResponse(nil)
 }
 
 func (res *UserDetailRes) Put() (int, error) {

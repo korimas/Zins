@@ -1,6 +1,7 @@
 package service
 
 import (
+	mapset "github.com/deckarep/golang-set"
 	"github.com/jinzhu/gorm"
 	"github.com/zpdev/zins/common/errutils"
 	"github.com/zpdev/zins/model"
@@ -46,4 +47,23 @@ func (service *userService) GetUser(db *gorm.DB, username string) (*model.User, 
 		return nil, errutils.UserNotFound(username)
 	}
 	return &user, nil
+}
+
+func (service *userService) DeleteUsers(db *gorm.DB, users []model.User) *errutils.ZinError {
+	needDeleteUsers := mapset.NewSet()
+	print(needDeleteUsers)
+	for i := 0; i < len(users); i++ {
+		needDeleteUsers.Add(users[i].Username)
+	}
+	if err := db.Where("Username in (?)", needDeleteUsers.ToSlice()).Delete(&model.User{}).Error; err != nil {
+		return errutils.DBOperationsFailed()
+	}
+	return nil
+}
+
+func (service *userService) DeleteUser(db *gorm.DB, username string) *errutils.ZinError {
+	if err := db.Where("Username = ?", username).Delete(&model.User{}).Error; err != nil {
+		return errutils.DBOperationsFailed()
+	}
+	return nil
 }
