@@ -39,7 +39,7 @@ func UserAlreadyExit(username string) *ZinError {
 
 func EmailAlreadyExit(email string) *ZinError {
 	return &ZinError{
-		Errno: 1002,
+		Errno: 1003,
 		Msg:   "Mail " + email + " already exist",
 		CnMsg: "邮箱" + email + "已经存在",
 	}
@@ -47,14 +47,14 @@ func EmailAlreadyExit(email string) *ZinError {
 
 func UserNotFound(username string) *ZinError {
 	return &ZinError{
-		Errno: 1002,
+		Errno: 1004,
 		Msg:   "User " + username + " not exist",
 		CnMsg: "用户" + username + "不存在",
 	}
 }
 func PasswordEncryptError() *ZinError {
 	return &ZinError{
-		Errno: 1003,
+		Errno: 1005,
 		Msg:   "Encrypt password error",
 		CnMsg: "密码加密失败",
 	}
@@ -62,7 +62,7 @@ func PasswordEncryptError() *ZinError {
 
 func PasswordVerifyError() *ZinError {
 	return &ZinError{
-		Errno: 1003,
+		Errno: 1006,
 		Msg:   "Verify password error",
 		CnMsg: "密码校验失败",
 	}
@@ -70,7 +70,7 @@ func PasswordVerifyError() *ZinError {
 
 func UserPassError() *ZinError {
 	return &ZinError{
-		Errno: 1003,
+		Errno: 1007,
 		Msg:   "Username or Password is not correct",
 		CnMsg: "用户名或密码不正确",
 	}
@@ -78,7 +78,7 @@ func UserPassError() *ZinError {
 
 func LoginFailed() *ZinError {
 	return &ZinError{
-		Errno: 1003,
+		Errno: 1008,
 		Msg:   "Login failed",
 		CnMsg: "登录失败",
 	}
@@ -86,7 +86,7 @@ func LoginFailed() *ZinError {
 
 func DBOperationsFailed() *ZinError {
 	return &ZinError{
-		Errno: 1003,
+		Errno: 1009,
 		Msg:   "DB Operations failed",
 		CnMsg: "数据库操作失败",
 	}

@@ -4,6 +4,7 @@ import (
 	"encoding/base64"
 	"github.com/jinzhu/gorm"
 	"github.com/satori/go.uuid"
+	cons "github.com/zpdev/zins/common/constance"
 	"github.com/zpdev/zins/common/errutils"
 	"github.com/zpdev/zins/common/utils"
 	"github.com/zpdev/zins/model"
@@ -51,7 +52,7 @@ func (service *authService) genToken(db *gorm.DB, user *model.User) (*model.Toke
 	token := model.Token{
 		Token:     tokenId.String(),
 		Username:  user.Username,
-		Status:    "Active",
+		Status:    cons.ACTIVE,
 		CreatedAt: timeNow.Unix(),
 		ExpiredAt: expiredTime.Unix(),
 	}

@@ -4,6 +4,7 @@ import (
 	"encoding/base64"
 	mapset "github.com/deckarep/golang-set"
 	"github.com/jinzhu/gorm"
+	cons "github.com/zpdev/zins/common/constance"
 	"github.com/zpdev/zins/common/errutils"
 	"github.com/zpdev/zins/common/utils"
 	"github.com/zpdev/zins/model"
@@ -32,7 +33,7 @@ func (service *userService) CreateUser(db *gorm.DB, user *model.User) *errutils.
 	user.Password = base64.StdEncoding.EncodeToString(encryptedPass)
 	//user.Password = utils.B2str(encryptedPass)
 	user.CreatedAt = time.Now().Unix()
-	user.Status = "Active"
+	user.Status = cons.ACTIVE
 	if err := db.Create(user).Error; err != nil {
 		print(err.Error())
 		return errutils.DBOperationsFailed()
@@ -71,6 +72,10 @@ func (service *userService) DeleteUsers(db *gorm.DB, users []model.User) *erruti
 	for i := 0; i < len(users); i++ {
 		needDeleteUsers.Add(users[i].Username)
 	}
+	if err := db.Where("Username in (?)", needDeleteUsers.ToSlice()).Delete(&model.Token{}).Error; err != nil {
+		return errutils.DBOperationsFailed()
+	}
+
 	if err := db.Where("Username in (?)", needDeleteUsers.ToSlice()).Delete(&model.User{}).Error; err != nil {
 		return errutils.DBOperationsFailed()
 	}
@@ -78,6 +83,10 @@ func (service *userService) DeleteUsers(db *gorm.DB, users []model.User) *erruti
 }
 
 func (service *userService) DeleteUser(db *gorm.DB, username string) *errutils.ZinError {
+	if err := db.Where("Username = ?", username).Delete(&model.Token{}).Error; err != nil {
+		return errutils.DBOperationsFailed()
+	}
+
 	if err := db.Where("Username = ?", username).Delete(&model.User{}).Error; err != nil {
 		return errutils.DBOperationsFailed()
 	}
