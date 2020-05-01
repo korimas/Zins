@@ -1,6 +1,9 @@
-package api
+package response
 
-import "github.com/zpdev/zins/common/errutils"
+import (
+	"github.com/zpdev/zins/common/errutils"
+	"github.com/zpdev/zins/model"
+)
 
 type Error struct {
 	Code    int    `json:"code"`
@@ -30,4 +33,9 @@ func ErrorResponse(zinError *errutils.ZinError) *Response {
 		Success: false,
 		Result:  nil,
 	}
+}
+
+type LoginResponse struct {
+	User  *model.User  `json:"user"`
+	Token *model.Token `json:"token"`
 }

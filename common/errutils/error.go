@@ -76,6 +76,14 @@ func UserPassError() *ZinError {
 	}
 }
 
+func LoginFailed() *ZinError {
+	return &ZinError{
+		Errno: 1003,
+		Msg:   "Login failed",
+		CnMsg: "登录失败",
+	}
+}
+
 func DBOperationsFailed() *ZinError {
 	return &ZinError{
 		Errno: 1003,

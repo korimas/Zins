@@ -15,7 +15,7 @@ type User struct {
 
 type Token struct {
 	Token     string `gorm:"size:64;primary_key;"       json:"token"       form:"token"`
-	Username  int64  `gorm:"size:64;"                   json:"username"    form:"username"`
+	Username  string `gorm:"size:64;"                   json:"username"    form:"username"`
 	Status    string `gorm:"size:32"                    json:"status"      form:"status"`
 	CreatedAt int64  `gorm:"not null"                   json:"created_at"  form:"created_at"`
 	ExpiredAt int64  `gorm:"not null"                   json:"expired_at"  form:"expired_at"`

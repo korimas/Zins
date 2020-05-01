@@ -2,7 +2,7 @@ package resource
 
 import (
 	"github.com/kataras/iris/v12"
-	"github.com/zpdev/zins/api"
+	"github.com/zpdev/zins/api/response"
 	"github.com/zpdev/zins/common/errutils"
 	"github.com/zpdev/zins/model"
 	"github.com/zpdev/zins/product/extend"
@@ -17,16 +17,19 @@ func (res *AuthRes) Get() (int, error) {
 	return res.Ctx.JSON(iris.Map{"auth": "get"})
 }
 
-func (res *AuthRes) Post() *api.Response {
+func (res *AuthRes) Post() *response.Response {
 	user := &model.User{}
 	if err := res.Ctx.ReadJSON(user); err != nil {
-		return api.ErrorResponse(errutils.JsonFormatError())
+		return response.ErrorResponse(errutils.JsonFormatError())
 	}
-	loginUser, err := service.AuthService.Login(extend.DB(), user)
+	loginUser, token, err := service.AuthService.Login(extend.DB(), user)
 	if err != nil {
-		return api.ErrorResponse(err)
+		return response.ErrorResponse(err)
 	}
-	return api.NormalResponse(loginUser)
+	return response.NormalResponse(response.LoginResponse{
+		User:  loginUser,
+		Token: token,
+	})
 }
 
 func (res *AuthRes) Delete() (int, error) {
