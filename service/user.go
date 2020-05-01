@@ -31,7 +31,6 @@ func (sec *userService) CreateUser(db *gorm.DB, user *model.User) *errutils.ZinE
 		return errutils.PasswordEncryptError()
 	}
 	user.Password = base64.StdEncoding.EncodeToString(encryptedPass)
-	//user.Password = utils.B2str(encryptedPass)
 	user.CreatedAt = time.Now().Unix()
 	user.Status = cons.ACTIVE
 	if err := db.Create(user).Error; err != nil {
