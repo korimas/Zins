@@ -29,6 +29,7 @@ func (res *UserRes) Post() *api.Response {
 	if err := service.UserService.CreateUser(extend.DB(), user); err != nil {
 		return api.ErrorResponse(err)
 	}
+	user.Password = ""
 	return api.NormalResponse(user)
 }
 

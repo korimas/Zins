@@ -4,6 +4,7 @@ import (
 	mapset "github.com/deckarep/golang-set"
 	"github.com/jinzhu/gorm"
 	"github.com/zpdev/zins/common/errutils"
+	"github.com/zpdev/zins/common/utils"
 	"github.com/zpdev/zins/model"
 	"time"
 )
@@ -23,6 +24,11 @@ func (service *userService) CreateUser(db *gorm.DB, user *model.User) *errutils.
 		return errutils.UserAlreadyExit(user.Username)
 	}
 
+	encryptedPass, err := utils.DerivePassphrase(user.Password, 32)
+	if err != nil {
+		return errutils.PasswordEncryptError()
+	}
+	user.Password = utils.B2str(encryptedPass)
 	user.CreatedAt = time.Now().Unix()
 	user.Status = "Active"
 	if err := db.Create(user).Error; err != nil {

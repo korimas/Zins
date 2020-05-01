@@ -52,6 +52,29 @@ func UserNotFound(username string) *ZinError {
 		CnMsg: "用户" + username + "不存在",
 	}
 }
+func PasswordEncryptError() *ZinError {
+	return &ZinError{
+		Errno: 1003,
+		Msg:   "Encrypt password error",
+		CnMsg: "密码加密失败",
+	}
+}
+
+func PasswordVerifyError() *ZinError {
+	return &ZinError{
+		Errno: 1003,
+		Msg:   "Verify password error",
+		CnMsg: "密码校验失败",
+	}
+}
+
+func UserPassError() *ZinError {
+	return &ZinError{
+		Errno: 1003,
+		Msg:   "Username or Password is not correct",
+		CnMsg: "用户名或密码不正确",
+	}
+}
 
 func DBOperationsFailed() *ZinError {
 	return &ZinError{
