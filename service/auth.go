@@ -16,7 +16,7 @@ var AuthService = &authService{}
 type authService struct {
 }
 
-func (service *authService) Login(db *gorm.DB, user *model.User) (*model.User, *model.Token, *errutils.ZinError) {
+func (sec *authService) Login(db *gorm.DB, user *model.User) (*model.User, *model.Token, *errutils.ZinError) {
 	var loginUser model.User
 	if db.Where("Username = ?", user.Username).First(&loginUser).RecordNotFound() {
 		return nil, nil, errutils.UserNotFound(user.Username)
@@ -33,7 +33,7 @@ func (service *authService) Login(db *gorm.DB, user *model.User) (*model.User, *
 		return nil, nil, errutils.UserPassError()
 	}
 	loginUser.Password = ""
-	token, tErr := service.genToken(db, user)
+	token, tErr := sec.genToken(db, user)
 	if tErr != nil {
 		return nil, nil, errutils.LoginFailed()
 	}
@@ -41,7 +41,7 @@ func (service *authService) Login(db *gorm.DB, user *model.User) (*model.User, *
 	return &loginUser, token, nil
 }
 
-func (service *authService) genToken(db *gorm.DB, user *model.User) (*model.Token, *errutils.ZinError) {
+func (sec *authService) genToken(db *gorm.DB, user *model.User) (*model.Token, *errutils.ZinError) {
 	tokenId := uuid.NewV4()
 	timeNow := time.Now()
 	h, err := time.ParseDuration("0.5h")
@@ -62,6 +62,6 @@ func (service *authService) genToken(db *gorm.DB, user *model.User) (*model.Toke
 	return &token, nil
 }
 
-func (service *authService) Logout(db *gorm.DB, user *model.User) *errutils.ZinError {
+func (sec *authService) Logout(db *gorm.DB, user *model.User) *errutils.ZinError {
 	return nil
 }

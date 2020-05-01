@@ -1,45 +1,45 @@
-package resource
+package controller
 
 import (
 	"github.com/kataras/iris/v12"
 )
 
-type CommentRes struct {
+type ArticleRes struct {
 	Ctx iris.Context
 }
 
-func (res *CommentRes) Get() (int, error) {
+func (res *ArticleRes) Get() (int, error) {
 	return res.Ctx.JSON(iris.Map{"user": "get"})
 }
 
-func (res *CommentRes) Post() (int, error) {
+func (res *ArticleRes) Post() (int, error) {
 	return res.Ctx.JSON(iris.Map{"user": "post"})
 }
 
-func (res *CommentRes) Delete() (int, error) {
+func (res *ArticleRes) Delete() (int, error) {
 	return res.Ctx.JSON(iris.Map{"user": "delete"})
 }
 
-func (res *CommentRes) Put() (int, error) {
+func (res *ArticleRes) Put() (int, error) {
 	return res.Ctx.JSON(iris.Map{"user": "put"})
 }
 
-type CommentDetailRes struct {
+type ArticleDetailRes struct {
 	Ctx iris.Context
 }
 
-func (res *CommentDetailRes) Get() (int, error) {
+func (res *ArticleDetailRes) Get() (int, error) {
 	return res.Ctx.JSON(iris.Map{"user": "get"})
 }
 
-func (res *CommentDetailRes) Post() (int, error) {
+func (res *ArticleDetailRes) Post() (int, error) {
 	return res.Ctx.JSON(iris.Map{"user": "post"})
 }
 
-func (res *CommentDetailRes) Delete() (int, error) {
+func (res *ArticleDetailRes) Delete() (int, error) {
 	return res.Ctx.JSON(iris.Map{"user": "delete"})
 }
 
-func (res *CommentDetailRes) Put() (int, error) {
+func (res *ArticleDetailRes) Put() (int, error) {
 	return res.Ctx.JSON(iris.Map{"user": "put"})
 }

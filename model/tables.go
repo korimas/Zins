@@ -20,3 +20,17 @@ type Token struct {
 	CreatedAt int64  `gorm:"not null"                   json:"created_at"  form:"created_at"`
 	ExpiredAt int64  `gorm:"not null"                   json:"expired_at"  form:"expired_at"`
 }
+
+type Config struct {
+	ID      uint   `gorm:"primary_key"`
+	Name    string `gorm:"size:32;"        json:"name"     form:"name"`
+	Value   string `gorm:"size:64;"        json:"value"    form:"value"`
+	Section string `gorm:"size:64;"        json:"section"  form:"section"`
+}
+
+type Info struct {
+	ID      uint   `gorm:"primary_key"`
+	Name    string `gorm:"size:32;"        json:"name"     form:"name"`
+	Value   string `gorm:"size:64;"        json:"value"    form:"value"`
+	Section string `gorm:"size:64;"        json:"section"  form:"section"`
+}

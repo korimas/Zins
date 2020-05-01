@@ -2,7 +2,7 @@ package service
 
 import (
 	"encoding/base64"
-	mapset "github.com/deckarep/golang-set"
+	set "github.com/deckarep/golang-set"
 	"github.com/jinzhu/gorm"
 	cons "github.com/zpdev/zins/common/constance"
 	"github.com/zpdev/zins/common/errutils"
@@ -16,7 +16,7 @@ var UserService = &userService{}
 type userService struct {
 }
 
-func (service *userService) CreateUser(db *gorm.DB, user *model.User) *errutils.ZinError {
+func (sec *userService) CreateUser(db *gorm.DB, user *model.User) *errutils.ZinError {
 	var checkUser model.User
 	if !db.Where("Email = ?", user.Email).First(&checkUser).RecordNotFound() {
 		return errutils.EmailAlreadyExit(user.Email)
@@ -41,7 +41,7 @@ func (service *userService) CreateUser(db *gorm.DB, user *model.User) *errutils.
 	return nil
 }
 
-func (service *userService) GetUsers(db *gorm.DB) ([]*model.User, *errutils.ZinError) {
+func (sec *userService) GetUsers(db *gorm.DB) ([]*model.User, *errutils.ZinError) {
 	users := make([]*model.User, 0)
 	columns := []string{
 		"Username", "Email", "Nickname",
@@ -54,7 +54,7 @@ func (service *userService) GetUsers(db *gorm.DB) ([]*model.User, *errutils.ZinE
 	}
 }
 
-func (service *userService) GetUser(db *gorm.DB, username string) (*model.User, *errutils.ZinError) {
+func (sec *userService) GetUser(db *gorm.DB, username string) (*model.User, *errutils.ZinError) {
 	columns := []string{
 		"Username", "Email", "Nickname",
 		"Avatar", "home_page", "Description",
@@ -66,8 +66,8 @@ func (service *userService) GetUser(db *gorm.DB, username string) (*model.User, 
 	return &user, nil
 }
 
-func (service *userService) DeleteUsers(db *gorm.DB, users []model.User) *errutils.ZinError {
-	needDeleteUsers := mapset.NewSet()
+func (sec *userService) DeleteUsers(db *gorm.DB, users []model.User) *errutils.ZinError {
+	needDeleteUsers := set.NewSet()
 	print(needDeleteUsers)
 	for i := 0; i < len(users); i++ {
 		needDeleteUsers.Add(users[i].Username)
@@ -82,7 +82,7 @@ func (service *userService) DeleteUsers(db *gorm.DB, users []model.User) *erruti
 	return nil
 }
 
-func (service *userService) DeleteUser(db *gorm.DB, username string) *errutils.ZinError {
+func (sec *userService) DeleteUser(db *gorm.DB, username string) *errutils.ZinError {
 	if err := db.Where("Username = ?", username).Delete(&model.Token{}).Error; err != nil {
 		return errutils.DBOperationsFailed()
 	}
