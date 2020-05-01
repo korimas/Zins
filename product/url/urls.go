@@ -7,20 +7,21 @@ import (
 )
 
 func Init() {
-	mvc.Configure(
-		app.App.Party("/rest"),
-		func(m *mvc.Application) {
-			m.Party("/auth").Handle(new(controller.Auth))
+	mvc.Configure(app.App.Party("/rest/v1"), configureV1)
+	//mvc.Configure(app.App.Party("/rest/v2"), configure)
+}
 
-			m.Party("/users").Handle(new(controller.User))
-			m.Party("/users/{username:string}").Handle(new(controller.UserDetail))
+func configureV1(m *mvc.Application) {
+	m.Party("/auth").Handle(&controller.Auth{}).Router.Use()
 
-			m.Party("/articles").Handle(new(controller.ArticleRes))
-			m.Party("/articles/{article_id:string}").Handle(new(controller.ArticleDetailRes))
+	m.Party("/users").Handle(&controller.User{})
+	m.Party("/users/{username:string}").Handle(&controller.UserDetail{})
 
-			m.Party("/comments").Handle(new(controller.CommentRes))
-			m.Party("/comments/{comment_id:string}").Handle(new(controller.CommentDetailRes))
+	m.Party("/articles").Handle(&controller.Article{})
+	m.Party("/articles/{article_id:string}").Handle(&controller.ArticleDetail{})
 
-			// TODO(zpzhou): admin
-		})
+	m.Party("/comments").Handle(new(controller.CommentRes))
+	m.Party("/comments/{comment_id:string}").Handle(new(controller.CommentDetailRes))
+
+	// TODO(zpzhou): admin
 }

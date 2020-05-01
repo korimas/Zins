@@ -4,42 +4,42 @@ import (
 	"github.com/kataras/iris/v12"
 )
 
-type ArticleRes struct {
+type Article struct {
 	Ctx iris.Context
 }
 
-func (res *ArticleRes) Get() (int, error) {
-	return res.Ctx.JSON(iris.Map{"user": "get"})
+func (c *Article) Get() (int, error) {
+	return c.Ctx.JSON(iris.Map{"user": "get"})
 }
 
-func (res *ArticleRes) Post() (int, error) {
-	return res.Ctx.JSON(iris.Map{"user": "post"})
+func (c *Article) Post() (int, error) {
+	return c.Ctx.JSON(iris.Map{"user": "post"})
 }
 
-func (res *ArticleRes) Delete() (int, error) {
-	return res.Ctx.JSON(iris.Map{"user": "delete"})
+func (c *Article) Delete() (int, error) {
+	return c.Ctx.JSON(iris.Map{"user": "delete"})
 }
 
-func (res *ArticleRes) Put() (int, error) {
-	return res.Ctx.JSON(iris.Map{"user": "put"})
+func (c *Article) Put() (int, error) {
+	return c.Ctx.JSON(iris.Map{"user": "put"})
 }
 
-type ArticleDetailRes struct {
+type ArticleDetail struct {
 	Ctx iris.Context
 }
 
-func (res *ArticleDetailRes) Get() (int, error) {
-	return res.Ctx.JSON(iris.Map{"user": "get"})
+func (c *ArticleDetail) Get() (int, error) {
+	return c.Ctx.JSON(iris.Map{"user": "get"})
 }
 
-func (res *ArticleDetailRes) Post() (int, error) {
-	return res.Ctx.JSON(iris.Map{"user": "post"})
+func (c *ArticleDetail) Post() (int, error) {
+	return c.Ctx.JSON(iris.Map{"user": "post"})
 }
 
-func (res *ArticleDetailRes) Delete() (int, error) {
-	return res.Ctx.JSON(iris.Map{"user": "delete"})
+func (c *ArticleDetail) Delete() (int, error) {
+	return c.Ctx.JSON(iris.Map{"user": "delete"})
 }
 
-func (res *ArticleDetailRes) Put() (int, error) {
-	return res.Ctx.JSON(iris.Map{"user": "put"})
+func (c *ArticleDetail) Put() (int, error) {
+	return c.Ctx.JSON(iris.Map{"user": "put"})
 }
