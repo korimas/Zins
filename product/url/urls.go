@@ -8,7 +8,7 @@ import (
 
 func Init() {
 	mvc.Configure(app.App.Party("/rest/v1"), configureV1)
-	//mvc.Configure(app.App.Party("/rest/v2"), configure)
+	mvc.Configure(app.App.Party("/rest/v1/admin"), configureV1Admin)
 }
 
 func configureV1(m *mvc.Application) {
@@ -22,6 +22,9 @@ func configureV1(m *mvc.Application) {
 
 	m.Party("/comments").Handle(new(controller.CommentRes))
 	m.Party("/comments/{comment_id:string}").Handle(new(controller.CommentDetailRes))
+}
 
-	// TODO(zpzhou): admin
+func configureV1Admin(m *mvc.Application) {
+	m.Router.Use(middleware.AdminAuth)
+	m.Party("/users").Handle(&controller.Auth{}).Router.Use()
 }
