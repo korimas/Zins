@@ -3,6 +3,7 @@ package url
 import (
 	"github.com/kataras/iris/v12/mvc"
 	"github.com/zpdev/zins/api/controller"
+	"github.com/zpdev/zins/api/middleware"
 	"github.com/zpdev/zins/product/app"
 )
 

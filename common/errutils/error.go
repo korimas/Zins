@@ -91,3 +91,11 @@ func DBOperationsFailed() *ZinError {
 		CnMsg: "数据库操作失败",
 	}
 }
+
+func InvaildToken() *ZinError {
+	return &ZinError{
+		Errno: 1010,
+		Msg:   "Invaild token",
+		CnMsg: "非法的Token",
+	}
+}
