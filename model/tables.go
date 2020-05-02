@@ -46,6 +46,7 @@ type Article struct {
 }
 
 type Comment struct {
+	// TODO: 评论 or 回复, 父子关系
 	ID        uint   `gorm:"primary_key"`
 	Author    string `gorm:"size:64;"                   json:"author"    form:"author"`
 	ArticleID uint
