@@ -28,9 +28,30 @@ type Config struct {
 	Section string `gorm:"size:64;"        json:"section"  form:"section"`
 }
 
-type Info struct {
+type RuningInfo struct {
 	ID      uint   `gorm:"primary_key"`
 	Name    string `gorm:"size:32;"        json:"name"     form:"name"`
 	Value   string `gorm:"size:64;"        json:"value"    form:"value"`
 	Section string `gorm:"size:64;"        json:"section"  form:"section"`
+}
+
+type Article struct {
+	ID        uint `gorm:"primary_key"`
+	Title     string
+	Content   string `gorm:"type:text"`
+	Author    string `gorm:"size:64;"                   json:"author"    form:"author"`
+	Status    string `gorm:"size:32"                    json:"status"      form:"status"`
+	CreatedAt int64  `gorm:"not null"                   json:"created_at"  form:"created_at"`
+	ExpiredAt int64  `gorm:"not null"                   json:"expired_at"  form:"expired_at"`
+}
+
+type Comment struct {
+	ID        uint   `gorm:"primary_key"`
+	Author    string `gorm:"size:64;"                   json:"author"    form:"author"`
+	ArticleID uint
+	Email     string `gorm:"size:128;not null;"         json:"email"        form:"email"`
+	Status    string `gorm:"size:32"                    json:"status"      form:"status"`
+	CreatedAt int64  `gorm:"not null"                   json:"created_at"  form:"created_at"`
+	ExpiredAt int64  `gorm:"not null"                   json:"expired_at"  form:"expired_at"`
+	Content   string `gorm:"type:text"`
 }
