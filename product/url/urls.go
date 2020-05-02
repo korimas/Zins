@@ -13,7 +13,7 @@ func Init() {
 }
 
 func configureV1(m *mvc.Application) {
-	m.Party("/auth").Handle(&controller.Auth{}).Router.Use()
+	m.Party("/auth").Handle(&controller.Auth{})
 
 	m.Party("/users").Handle(&controller.User{})
 	m.Party("/users/{username:string}").Handle(&controller.UserDetail{})
@@ -27,5 +27,5 @@ func configureV1(m *mvc.Application) {
 
 func configureV1Admin(m *mvc.Application) {
 	m.Router.Use(middleware.AdminAuth)
-	m.Party("/users").Handle(&controller.Auth{}).Router.Use()
+	m.Party("/users").Handle(&controller.Auth{})
 }

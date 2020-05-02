@@ -45,7 +45,7 @@ func (sec *userService) GetUsers(db *gorm.DB) ([]*model.User, *errutils.ZinError
 	columns := []string{
 		"Username", "Email", "Nickname",
 		"Avatar", "home_page", "Description",
-		"Status", "Roles", "created_at"}
+		"Status", "Role", "created_at"}
 	if db.Select(columns).Find(&users).RecordNotFound() {
 		return nil, errutils.DBOperationsFailed()
 	} else {
@@ -57,7 +57,7 @@ func (sec *userService) GetUser(db *gorm.DB, username string) (*model.User, *err
 	columns := []string{
 		"Username", "Email", "Nickname",
 		"Avatar", "home_page", "Description",
-		"Status", "Roles", "created_at"}
+		"Status", "Role", "created_at"}
 	var user model.User
 	if db.Select(columns).Where("Username = ?", username).First(&user).RecordNotFound() {
 		return nil, errutils.UserNotFound(username)
@@ -67,7 +67,6 @@ func (sec *userService) GetUser(db *gorm.DB, username string) (*model.User, *err
 
 func (sec *userService) DeleteUsers(db *gorm.DB, users []model.User) *errutils.ZinError {
 	needDeleteUsers := set.NewSet()
-	print(needDeleteUsers)
 	for i := 0; i < len(users); i++ {
 		needDeleteUsers.Add(users[i].Username)
 	}

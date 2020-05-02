@@ -99,3 +99,27 @@ func InvaildToken() *ZinError {
 		CnMsg: "非法的令牌",
 	}
 }
+
+func NotLogin() *ZinError {
+	return &ZinError{
+		Errno: 1011,
+		Msg:   "Not login",
+		CnMsg: "未登录",
+	}
+}
+
+func LoginTimeOut() *ZinError {
+	return &ZinError{
+		Errno: 1011,
+		Msg:   "Login timeout",
+		CnMsg: "登录超时",
+	}
+}
+
+func PermissionDenied() *ZinError {
+	return &ZinError{
+		Errno: 1011,
+		Msg:   "Permission denied",
+		CnMsg: "权限不足",
+	}
+}

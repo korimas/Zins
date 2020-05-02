@@ -9,7 +9,7 @@ type User struct {
 	HomePage    string `gorm:"size:256"                   json:"home_page"    form:"home_page"`
 	Description string `gorm:"type:text"                  json:"description"  form:"description"`
 	Status      string `gorm:"size:32;not null;"          json:"status"       form:"status"`
-	Roles       string `gorm:"size:32;not null;"          json:"roles"        form:"roles"`
+	Role        string `gorm:"size:32;not null;"          json:"role"         form:"role"`
 	CreatedAt   int64  `gorm:"not null"                   json:"created_at"   form:"created_at"`
 }
 

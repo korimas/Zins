@@ -9,3 +9,7 @@ const (
 	ACTIVE = "Active"
 	ERROR  = "Error"
 )
+
+const (
+	RoleAdmin = "Admin"
+)
