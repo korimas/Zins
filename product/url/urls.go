@@ -2,7 +2,7 @@ package url
 
 import (
 	"github.com/kataras/iris/v12/mvc"
-	"github.com/zpdev/zins/api/controller"
+	"github.com/zpdev/zins/api/controller/admin"
 	"github.com/zpdev/zins/api/middleware"
 	"github.com/zpdev/zins/product/app"
 )
@@ -13,19 +13,27 @@ func Init() {
 }
 
 func configureV1(m *mvc.Application) {
-	m.Party("/auth").Handle(&controller.Auth{})
+	m.Party("/auth").Handle(&admin.Auth{})
 
-	m.Party("/users").Handle(&controller.User{})
-	m.Party("/users/{username:string}").Handle(&controller.UserDetail{})
+	m.Party("/users").Handle(&admin.User{})
+	m.Party("/users/{username:string}").Handle(&admin.UserDetail{})
 
-	m.Party("/articles").Handle(&controller.Article{})
-	m.Party("/articles/{article_id:string}").Handle(&controller.ArticleDetail{})
+	m.Party("/articles").Handle(&admin.Article{})
+	m.Party("/articles/{article_id:string}").Handle(&admin.ArticleDetail{})
 
-	m.Party("/comments").Handle(new(controller.CommentRes))
-	m.Party("/comments/{comment_id:string}").Handle(new(controller.CommentDetailRes))
+	m.Party("/comments").Handle(new(admin.CommentRes))
+	m.Party("/comments/{comment_id:string}").Handle(new(admin.CommentDetailRes))
 }
 
 func configureV1Admin(m *mvc.Application) {
 	m.Router.Use(middleware.AdminAuth)
-	m.Party("/users").Handle(&controller.Auth{})
+
+	m.Party("/users").Handle(&admin.User{})
+	m.Party("/users/{username:string}").Handle(&admin.UserDetail{})
+
+	m.Party("/articles").Handle(&admin.Article{})
+	m.Party("/articles/{article_id:string}").Handle(&admin.ArticleDetail{})
+
+	m.Party("/comments").Handle(new(admin.CommentRes))
+	m.Party("/comments/{comment_id:string}").Handle(new(admin.CommentDetailRes))
 }
