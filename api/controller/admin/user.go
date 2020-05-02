@@ -45,10 +45,6 @@ func (c *User) Delete() *jsfmt.Response {
 	return jsfmt.NormalResponse(nil)
 }
 
-func (c *User) Put() (int, error) {
-	return c.Ctx.JSON(iris.Map{"user": "put"})
-}
-
 // UserDetail
 type UserDetail struct {
 	Ctx iris.Context
