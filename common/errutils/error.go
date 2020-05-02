@@ -96,6 +96,6 @@ func InvaildToken() *ZinError {
 	return &ZinError{
 		Errno: 1010,
 		Msg:   "Invaild token",
-		CnMsg: "非法的Token",
+		CnMsg: "非法的令牌",
 	}
 }

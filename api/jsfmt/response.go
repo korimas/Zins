@@ -1,4 +1,4 @@
-package schema
+package jsfmt
 
 import (
 	"github.com/zpdev/zins/common/errutils"

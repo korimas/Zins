@@ -2,7 +2,7 @@ package controller
 
 import (
 	"github.com/kataras/iris/v12"
-	"github.com/zpdev/zins/api/schema"
+	"github.com/zpdev/zins/api/jsfmt"
 	"github.com/zpdev/zins/common/errutils"
 	"github.com/zpdev/zins/model"
 	"github.com/zpdev/zins/product/extend"
@@ -13,36 +13,36 @@ type User struct {
 	Ctx iris.Context
 }
 
-func (c *User) Get() *schema.Response {
+func (c *User) Get() *jsfmt.Response {
 	users, err := service.UserService.GetUsers(extend.DB())
 	if err != nil {
-		return schema.ErrorResponse(err)
+		return jsfmt.ErrorResponse(err)
 	}
-	return schema.NormalResponse(users)
+	return jsfmt.NormalResponse(users)
 }
 
-func (c *User) Post() *schema.Response {
+func (c *User) Post() *jsfmt.Response {
 	// TODO: need add on-off
 	user := &model.User{}
 	if err := c.Ctx.ReadJSON(user); err != nil {
-		return schema.ErrorResponse(errutils.JsonFormatError())
+		return jsfmt.ErrorResponse(errutils.JsonFormatError())
 	}
 	if err := service.UserService.CreateUser(extend.DB(), user); err != nil {
-		return schema.ErrorResponse(err)
+		return jsfmt.ErrorResponse(err)
 	}
 	user.Password = ""
-	return schema.NormalResponse(user)
+	return jsfmt.NormalResponse(user)
 }
 
-func (c *User) Delete() *schema.Response {
+func (c *User) Delete() *jsfmt.Response {
 	var users []model.User
 	if err := c.Ctx.ReadJSON(&users); err != nil {
-		return schema.ErrorResponse(errutils.JsonFormatError())
+		return jsfmt.ErrorResponse(errutils.JsonFormatError())
 	}
 	if err := service.UserService.DeleteUsers(extend.DB(), users); err != nil {
-		return schema.ErrorResponse(err)
+		return jsfmt.ErrorResponse(err)
 	}
-	return schema.NormalResponse(nil)
+	return jsfmt.NormalResponse(nil)
 }
 
 func (c *User) Put() (int, error) {
@@ -54,21 +54,21 @@ type UserDetail struct {
 	Ctx iris.Context
 }
 
-func (c *UserDetail) Get() *schema.Response {
+func (c *UserDetail) Get() *jsfmt.Response {
 	username := c.Ctx.Params().Get("username")
 	user, err := service.UserService.GetUser(extend.DB(), username)
 	if err != nil {
-		return schema.ErrorResponse(err)
+		return jsfmt.ErrorResponse(err)
 	}
-	return schema.NormalResponse(user)
+	return jsfmt.NormalResponse(user)
 }
 
-func (c *UserDetail) Delete() *schema.Response {
+func (c *UserDetail) Delete() *jsfmt.Response {
 	username := c.Ctx.Params().Get("username")
 	if err := service.UserService.DeleteUser(extend.DB(), username); err != nil {
-		return schema.ErrorResponse(err)
+		return jsfmt.ErrorResponse(err)
 	}
-	return schema.NormalResponse(nil)
+	return jsfmt.NormalResponse(nil)
 }
 
 func (c *UserDetail) Put() (int, error) {
