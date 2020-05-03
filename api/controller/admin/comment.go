@@ -9,6 +9,7 @@ type CommentRes struct {
 }
 
 func (res *CommentRes) Get() (int, error) {
+	// TODO: 增加分页,查询条件
 	return res.Ctx.JSON(iris.Map{"user": "get"})
 }
 

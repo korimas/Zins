@@ -14,6 +14,7 @@ type Response struct {
 	Error   interface{} `json:"error"`
 	Result  interface{} `json:"result"`
 	Success bool        `json:"success"`
+	Total   int         `json:"total"`
 }
 
 func NormalResponse(result interface{}) *Response {
@@ -21,6 +22,15 @@ func NormalResponse(result interface{}) *Response {
 		Error:   nil,
 		Success: true,
 		Result:  result,
+	}
+}
+
+func QueryResponse(result interface{}, total int) *Response {
+	return &Response{
+		Error:   nil,
+		Success: true,
+		Result:  result,
+		Total:   total,
 	}
 }
 

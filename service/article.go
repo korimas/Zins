@@ -3,6 +3,7 @@ package service
 import (
 	set "github.com/deckarep/golang-set"
 	"github.com/jinzhu/gorm"
+	"github.com/zpdev/zins/api/jsfmt"
 	"github.com/zpdev/zins/common/errutils"
 	"github.com/zpdev/zins/model"
 	"time"
@@ -21,8 +22,13 @@ func (sec *articleService) GetArticle(db *gorm.DB, articleId uint) (*model.Artic
 	return article, nil
 }
 
-func (sec *articleService) GetArticles(db *gorm.DB) ([]*model.Article, *errutils.ZinError) {
+func (sec *articleService) GetArticles(db *gorm.DB, query *jsfmt.Query) ([]*model.Article, *errutils.ZinError) {
+	var Zerr *errutils.ZinError
 	articles := make([]*model.Article, 0)
+	db, Zerr = query.GenDB(db)
+	if Zerr != nil {
+		return nil, Zerr
+	}
 	if err := db.Find(&articles).Error; err != nil {
 		return nil, errutils.DBOperationsFailed(err.Error())
 	}

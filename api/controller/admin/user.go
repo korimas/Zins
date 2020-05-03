@@ -14,6 +14,7 @@ type User struct {
 }
 
 func (c *User) Get() *jsfmt.Response {
+	// TODO: 增加分页,查询条件
 	users, err := service.UserService.GetUsers(extend.DB())
 	if err != nil {
 		return jsfmt.ErrorResponse(err)
@@ -22,7 +23,7 @@ func (c *User) Get() *jsfmt.Response {
 }
 
 func (c *User) Post() *jsfmt.Response {
-	// TODO: need add on-off
+	// TODO: 增加用户注册开关
 	user := &model.User{}
 	if err := c.Ctx.ReadJSON(user); err != nil {
 		return jsfmt.ErrorResponse(errutils.JsonFormatError(err.Error()))
@@ -68,5 +69,5 @@ func (c *UserDetail) Delete() *jsfmt.Response {
 }
 
 func (c *UserDetail) Put() (int, error) {
-	return c.Ctx.JSON(iris.Map{"user_detail": "put"})
+	return c.Ctx.JSON(iris.Map{"user_detail_put": "not implement"})
 }

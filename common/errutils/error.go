@@ -140,3 +140,11 @@ func ArticleNotFound() *ZinError {
 		CnMsg: "文章不存在",
 	}
 }
+
+func ConditionError() *ZinError {
+	return &ZinError{
+		Errno: 1011,
+		Msg:   "Query condition not correct",
+		CnMsg: "查询表达式不正确",
+	}
+}

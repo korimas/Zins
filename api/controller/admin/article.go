@@ -1,6 +1,7 @@
 package admin
 
 import (
+	"encoding/json"
 	"github.com/kataras/iris/v12"
 	"github.com/zpdev/zins/api/jsfmt"
 	cons "github.com/zpdev/zins/common/constance"
@@ -16,7 +17,13 @@ type Article struct {
 }
 
 func (c *Article) Get() *jsfmt.Response {
-	articles, err := service.ArticleService.GetArticles(extend.DB())
+	// TODO: 增加分页,查询条件
+	queryByte := []byte(c.Ctx.FormValue("query"))
+	var query = jsfmt.Query{}
+	if err := json.Unmarshal(queryByte, &query); err != nil {
+		return jsfmt.ErrorResponse(errutils.JsonFormatError(err.Error()))
+	}
+	articles, err := service.ArticleService.GetArticles(extend.DB(), &query)
 	if err != nil {
 		return jsfmt.ErrorResponse(err)
 	}
@@ -95,5 +102,5 @@ func (c *ArticleDetail) Delete() *jsfmt.Response {
 }
 
 func (c *ArticleDetail) Put() (int, error) {
-	return c.Ctx.JSON(iris.Map{"user": "put"})
+	return c.Ctx.JSON(iris.Map{"artice_detail_put": "not implement"})
 }
