@@ -18,7 +18,7 @@ func AdminAuth(ctx iris.Context) {
 		return
 	}
 
-	if token.ExpiredAt < time.Now().Unix() {
+	if token.ExpiredTime < time.Now().Unix() {
 		failedAuth(ctx, errutils.LoginTimeOut())
 		return
 	}

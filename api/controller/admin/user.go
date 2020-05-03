@@ -25,7 +25,7 @@ func (c *User) Post() *jsfmt.Response {
 	// TODO: need add on-off
 	user := &model.User{}
 	if err := c.Ctx.ReadJSON(user); err != nil {
-		return jsfmt.ErrorResponse(errutils.JsonFormatError())
+		return jsfmt.ErrorResponse(errutils.JsonFormatError(err.Error()))
 	}
 	if err := service.UserService.CreateUser(extend.DB(), user); err != nil {
 		return jsfmt.ErrorResponse(err)
@@ -37,7 +37,7 @@ func (c *User) Post() *jsfmt.Response {
 func (c *User) Delete() *jsfmt.Response {
 	var users []model.User
 	if err := c.Ctx.ReadJSON(&users); err != nil {
-		return jsfmt.ErrorResponse(errutils.JsonFormatError())
+		return jsfmt.ErrorResponse(errutils.JsonFormatError(err.Error()))
 	}
 	if err := service.UserService.DeleteUsers(extend.DB(), users); err != nil {
 		return jsfmt.ErrorResponse(err)

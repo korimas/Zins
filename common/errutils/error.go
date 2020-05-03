@@ -21,11 +21,11 @@ func (err *ZinError) GetMsg(lang string) string {
 	return err.Msg
 }
 
-func JsonFormatError() *ZinError {
+func JsonFormatError(errmsg string) *ZinError {
 	return &ZinError{
 		Errno: 1001,
-		Msg:   "JSON format error",
-		CnMsg: "JSON格式化失败",
+		Msg:   "JSON format error: " + errmsg,
+		CnMsg: "JSON格式化失败：" + errmsg,
 	}
 }
 
@@ -93,11 +93,11 @@ func LoginFailed() *ZinError {
 	}
 }
 
-func DBOperationsFailed() *ZinError {
+func DBOperationsFailed(msg string) *ZinError {
 	return &ZinError{
 		Errno: 1009,
-		Msg:   "DB Operations failed",
-		CnMsg: "数据库操作失败",
+		Msg:   "DB Operations failed: " + msg,
+		CnMsg: "数据库操作失败：" + msg,
 	}
 }
 

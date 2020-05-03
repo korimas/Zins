@@ -22,9 +22,10 @@ func (c *Article) Get() *jsfmt.Response {
 }
 
 func (c *Article) Post() *jsfmt.Response {
+	// TODO: need add author, type ext.
 	article := &model.Article{}
 	if err := c.Ctx.ReadJSON(article); err != nil {
-		return jsfmt.ErrorResponse(errutils.JsonFormatError())
+		return jsfmt.ErrorResponse(errutils.JsonFormatError(err.Error()))
 	}
 
 	if err := service.ArticleService.CreateArticle(extend.DB(), article); err != nil {
@@ -33,12 +34,28 @@ func (c *Article) Post() *jsfmt.Response {
 	return jsfmt.NormalResponse(article)
 }
 
-func (c *Article) Delete() (int, error) {
-	return c.Ctx.JSON(iris.Map{"user": "delete"})
+func (c *Article) Delete() *jsfmt.Response {
+	var articles []model.Article
+	if err := c.Ctx.ReadJSON(&articles); err != nil {
+		return jsfmt.ErrorResponse(errutils.JsonFormatError(err.Error()))
+	}
+	if err := service.ArticleService.DeleteArticles(extend.DB(), articles); err != nil {
+		return jsfmt.ErrorResponse(err)
+	}
+	return jsfmt.NormalResponse(nil)
 }
 
-func (c *Article) Put() (int, error) {
-	return c.Ctx.JSON(iris.Map{"user": "put"})
+func (c *Article) Put() *jsfmt.Response {
+	//article := &model.Article{}
+	var article map[string]interface{}
+	if err := c.Ctx.ReadJSON(&article); err != nil {
+		return jsfmt.ErrorResponse(errutils.JsonFormatError(err.Error()))
+	}
+	updatedArticle, err := service.ArticleService.UpdateArticle(extend.DB(), article)
+	if err != nil {
+		return jsfmt.ErrorResponse(err)
+	}
+	return jsfmt.NormalResponse(updatedArticle)
 }
 
 type ArticleDetail struct {

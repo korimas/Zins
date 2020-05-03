@@ -50,14 +50,14 @@ func (sec *authService) genToken(db *gorm.DB, user *model.User) (*model.Token, *
 	}
 	expiredTime := timeNow.Add(h)
 	token := model.Token{
-		Token:     tokenId.String(),
-		UserID:    user.ID,
-		Status:    cons.ACTIVE,
-		CreatedAt: timeNow.Unix(),
-		ExpiredAt: expiredTime.Unix(),
+		Token:       tokenId.String(),
+		UserID:      user.ID,
+		Status:      cons.ACTIVE,
+		CreatedTime: timeNow.Unix(),
+		ExpiredTime: expiredTime.Unix(),
 	}
 	if err := db.Create(&token).Error; err != nil {
-		return nil, errutils.DBOperationsFailed()
+		return nil, errutils.DBOperationsFailed(err.Error())
 	}
 	return &token, nil
 }

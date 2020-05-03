@@ -20,7 +20,7 @@ func (c *Auth) Get() (int, error) {
 func (c *Auth) Post() *jsfmt.Response {
 	user := &model.User{}
 	if err := c.Ctx.ReadJSON(user); err != nil {
-		return jsfmt.ErrorResponse(errutils.JsonFormatError())
+		return jsfmt.ErrorResponse(errutils.JsonFormatError(err.Error()))
 	}
 	loginUser, token, err := service.AuthService.Login(extend.DB(), user)
 	if err != nil {

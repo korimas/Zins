@@ -31,26 +31,26 @@ func (sec *userService) CreateUser(db *gorm.DB, user *model.User) *errutils.ZinE
 		return errutils.PasswordEncryptError()
 	}
 	user.Password = base64.StdEncoding.EncodeToString(encryptedPass)
-	user.CreatedAt = time.Now().Unix()
+	user.CreatedTime = time.Now().Unix()
 	user.Status = cons.ACTIVE
 	if err := db.Create(user).Error; err != nil {
-		return errutils.DBOperationsFailed()
+		return errutils.DBOperationsFailed(err.Error())
 	}
 	return nil
 }
 
 func (sec *userService) GetUsers(db *gorm.DB) ([]*model.User, *errutils.ZinError) {
 	users := make([]*model.User, 0)
-	columns := []string{"ID", "Username", "Email", "Nickname", "Description", "Status", "Role", "created_at"}
+	columns := []string{"ID", "Username", "Email", "Nickname", "Description", "Status", "Role", "created_time"}
 	if err := db.Select(columns).Find(&users).Error; err != nil {
-		return nil, errutils.DBOperationsFailed()
+		return nil, errutils.DBOperationsFailed(err.Error())
 	} else {
 		return users, nil
 	}
 }
 
 func (sec *userService) GetUser(db *gorm.DB, username string) (*model.User, *errutils.ZinError) {
-	columns := []string{"ID", "Username", "Email", "Nickname", "Description", "Status", "Role", "created_at"}
+	columns := []string{"ID", "Username", "Email", "Nickname", "Description", "Status", "Role", "created_time"}
 	var user model.User
 	if db.Select(columns).Where("Username = ?", username).First(&user).RecordNotFound() {
 		return nil, errutils.SpecifiedUserNotFound(username)
@@ -64,22 +64,22 @@ func (sec *userService) DeleteUsers(db *gorm.DB, users []model.User) *errutils.Z
 		needDeleteUsers.Add(users[i].Username)
 	}
 	if err := db.Where("Username in (?)", needDeleteUsers.ToSlice()).Delete(&model.Token{}).Error; err != nil {
-		return errutils.DBOperationsFailed()
+		return errutils.DBOperationsFailed(err.Error())
 	}
 
 	if err := db.Where("Username in (?)", needDeleteUsers.ToSlice()).Delete(&model.User{}).Error; err != nil {
-		return errutils.DBOperationsFailed()
+		return errutils.DBOperationsFailed(err.Error())
 	}
 	return nil
 }
 
 func (sec *userService) DeleteUser(db *gorm.DB, username string) *errutils.ZinError {
 	if err := db.Where("Username = ?", username).Delete(&model.Token{}).Error; err != nil {
-		return errutils.DBOperationsFailed()
+		return errutils.DBOperationsFailed(err.Error())
 	}
 
 	if err := db.Where("Username = ?", username).Delete(&model.User{}).Error; err != nil {
-		return errutils.DBOperationsFailed()
+		return errutils.DBOperationsFailed(err.Error())
 	}
 	return nil
 }
