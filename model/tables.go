@@ -43,6 +43,7 @@ type Article struct {
 	Title       string `gorm:"size:256"           json:"title"         form:"title"`        //标题
 	Content     string `gorm:"type:text"          json:"content"       form:"content"`      //内容
 	Author      string `gorm:"size:64;"           json:"author"        form:"author"`       //作者
+	AuthorID    uint   `                          json:"author_id"     form:"author_id"`    //作者
 	Status      string `gorm:"size:32"            json:"status"        form:"status"`       //状态
 	Type        string `gorm:"size:32"            json:"type"          form:"type"`         //文章分类
 	CreatedTime int64  `gorm:"not null"           json:"created_time"  form:"created_time"` //创建于

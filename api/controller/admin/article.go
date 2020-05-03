@@ -3,6 +3,7 @@ package admin
 import (
 	"github.com/kataras/iris/v12"
 	"github.com/zpdev/zins/api/jsfmt"
+	cons "github.com/zpdev/zins/common/constance"
 	"github.com/zpdev/zins/common/errutils"
 	"github.com/zpdev/zins/model"
 	"github.com/zpdev/zins/product/extend"
@@ -23,12 +24,14 @@ func (c *Article) Get() *jsfmt.Response {
 }
 
 func (c *Article) Post() *jsfmt.Response {
-	// TODO: need add author, type ext.
 	article := &model.Article{}
 	if err := c.Ctx.ReadJSON(article); err != nil {
 		return jsfmt.ErrorResponse(errutils.JsonFormatError(err.Error()))
 	}
-
+	author := c.Ctx.Values().Get(cons.ContextUser).(*model.User)
+	article.AuthorID = author.ID
+	article.Author = author.Username
+	article.Status = cons.ACTIVE
 	if err := service.ArticleService.CreateArticle(extend.DB(), article); err != nil {
 		return jsfmt.ErrorResponse(err)
 	}

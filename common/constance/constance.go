@@ -13,3 +13,7 @@ const (
 const (
 	RoleAdmin = "Admin"
 )
+
+const (
+	ContextUser = "User"
+)

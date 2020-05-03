@@ -34,6 +34,7 @@ func AdminAuth(ctx iris.Context) {
 		return
 	}
 
+	ctx.Values().Set(cons.ContextUser, user)
 	ctx.Next()
 
 }
