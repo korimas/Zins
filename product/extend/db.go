@@ -19,7 +19,7 @@ func DB() *gorm.DB {
 	db.BlockGlobalUpdate(true)
 
 	// just for debug
-	//db.LogMode(true)
+	db.LogMode(true)
 
 	db.AutoMigrate(&model.User{})
 	db.AutoMigrate(&model.Token{})

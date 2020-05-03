@@ -62,7 +62,11 @@ func (query *Query) Find(db *gorm.DB, model interface{}, result interface{}) (in
 		db = db.Order(query.Order)
 	}
 
-	if err := db.Offset((query.Page - 1) * query.Limit).Limit(query.Limit).Find(result).Error; err != nil {
+	if query.Limit != 0 {
+		db = db.Offset((query.Page - 1) * query.Limit).Limit(query.Limit)
+	}
+
+	if err := db.Find(result).Error; err != nil {
 		return 0, errutils.DBOperationsFailed(err.Error())
 	}
 	return total, nil
