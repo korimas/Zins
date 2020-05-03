@@ -1,2 +1,2 @@
 # Zins
-Blog by GoLang
+Blog by GoLang(为学习Golang造的轮子)
