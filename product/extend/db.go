@@ -16,6 +16,8 @@ func DB() *gorm.DB {
 	db = orm.New(app.App).DB
 	db.AutoMigrate(&model.User{})
 	db.AutoMigrate(&model.Token{})
+	db.AutoMigrate(&model.Article{})
+	db.AutoMigrate(&model.Comment{})
 
 	return db
 }

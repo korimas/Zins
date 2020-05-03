@@ -132,3 +132,11 @@ func PermissionDenied() *ZinError {
 		CnMsg: "权限不足",
 	}
 }
+
+func ArticleNotFound() *ZinError {
+	return &ZinError{
+		Errno: 1011,
+		Msg:   "Article not found",
+		CnMsg: "文章不存在",
+	}
+}

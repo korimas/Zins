@@ -44,7 +44,7 @@ type Article struct {
 	Content   string `gorm:"type:text"     json:"content"     form:"content"`    //内容
 	Author    string `gorm:"size:64;"      json:"author"      form:"author"`     //作者
 	Status    string `gorm:"size:32"       json:"status"      form:"status"`     //状态
-	Type      string `gorm:"size:32"       json:"status"      form:"status"`     //文章分类
+	Type      string `gorm:"size:32"       json:"type"        form:"type"`       //文章分类
 	CreatedAt int64  `gorm:"not null"      json:"created_at"  form:"created_at"` //创建于
 	UpdatedAt int64  `gorm:"not null"      json:"updated_at"  form:"updated_at"` //编辑于
 }

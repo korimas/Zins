@@ -34,7 +34,6 @@ func (sec *userService) CreateUser(db *gorm.DB, user *model.User) *errutils.ZinE
 	user.CreatedAt = time.Now().Unix()
 	user.Status = cons.ACTIVE
 	if err := db.Create(user).Error; err != nil {
-		print(err.Error())
 		return errutils.DBOperationsFailed()
 	}
 	return nil
@@ -43,7 +42,7 @@ func (sec *userService) CreateUser(db *gorm.DB, user *model.User) *errutils.ZinE
 func (sec *userService) GetUsers(db *gorm.DB) ([]*model.User, *errutils.ZinError) {
 	users := make([]*model.User, 0)
 	columns := []string{"ID", "Username", "Email", "Nickname", "Description", "Status", "Role", "created_at"}
-	if db.Select(columns).Find(&users).RecordNotFound() {
+	if err := db.Select(columns).Find(&users).Error; err != nil {
 		return nil, errutils.DBOperationsFailed()
 	} else {
 		return users, nil
