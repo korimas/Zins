@@ -22,18 +22,15 @@ func (sec *articleService) GetArticle(db *gorm.DB, articleId uint) (*model.Artic
 	return article, nil
 }
 
-func (sec *articleService) GetArticles(db *gorm.DB, query *jsfmt.Query) ([]*model.Article, *errutils.ZinError) {
-	var Zerr *errutils.ZinError
+func (sec *articleService) GetArticles(db *gorm.DB, query *jsfmt.Query) ([]*model.Article, int, *errutils.ZinError) {
 	articles := make([]*model.Article, 0)
-	db, Zerr = query.GenDB(db)
-	if Zerr != nil {
-		return nil, Zerr
+	total := 0
+	Zerr := &errutils.ZinError{}
+	if total, Zerr = query.Find(db, &model.Article{}, &articles); Zerr != nil {
+		return nil, 0, Zerr
 	}
-	if err := db.Find(&articles).Error; err != nil {
-		return nil, errutils.DBOperationsFailed(err.Error())
-	}
-	return articles, nil
 
+	return articles, total, nil
 }
 
 func (sec *articleService) CreateArticle(db *gorm.DB, article *model.Article) *errutils.ZinError {

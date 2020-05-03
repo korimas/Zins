@@ -1,6 +1,7 @@
 package jsfmt
 
 import (
+	"encoding/json"
 	"github.com/jinzhu/gorm"
 	"github.com/zpdev/zins/common/errutils"
 )
@@ -15,8 +16,18 @@ type Condition struct {
 type Query struct {
 	Limit      int         `json:"limit"`
 	Page       int         `json:"page"`
-	Total      int         `json:"total"`
+	Order      string      `json:"order"`
 	Conditions []Condition `json:"conditions"`
+}
+
+func ReadQuery(body string) (*Query, *errutils.ZinError) {
+	var query = Query{}
+	if body != "" {
+		if err := json.Unmarshal([]byte(body), &query); err != nil {
+			return nil, errutils.JsonFormatError(err.Error())
+		}
+	}
+	return &query, nil
 }
 
 func (query *Query) GenDB(db *gorm.DB) (*gorm.DB, *errutils.ZinError) {
@@ -35,4 +46,24 @@ func (query *Query) GenDB(db *gorm.DB) (*gorm.DB, *errutils.ZinError) {
 		}
 	}
 	return db, nil
+}
+
+func (query *Query) Find(db *gorm.DB, model interface{}, result interface{}) (int, *errutils.ZinError) {
+	var err *errutils.ZinError
+	var total int
+
+	if db, err = query.GenDB(db.Model(model)); err != nil {
+		return 0, err
+	}
+
+	db.Count(&total)
+
+	if query.Order != "" {
+		db = db.Order(query.Order)
+	}
+
+	if err := db.Offset((query.Page - 1) * query.Limit).Limit(query.Limit).Find(result).Error; err != nil {
+		return 0, errutils.DBOperationsFailed(err.Error())
+	}
+	return total, nil
 }

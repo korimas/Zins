@@ -4,6 +4,7 @@ import (
 	"encoding/base64"
 	set "github.com/deckarep/golang-set"
 	"github.com/jinzhu/gorm"
+	"github.com/zpdev/zins/api/jsfmt"
 	cons "github.com/zpdev/zins/common/constance"
 	"github.com/zpdev/zins/common/errutils"
 	"github.com/zpdev/zins/common/utils"
@@ -39,14 +40,27 @@ func (sec *userService) CreateUser(db *gorm.DB, user *model.User) *errutils.ZinE
 	return nil
 }
 
-func (sec *userService) GetUsers(db *gorm.DB) ([]*model.User, *errutils.ZinError) {
+//
+//func (sec *userService) GetUsers(db *gorm.DB) ([]*model.User, *errutils.ZinError) {
+//	users := make([]*model.User, 0)
+//	columns := []string{"ID", "Username", "Email", "Nickname", "Description", "Status", "Role", "created_time"}
+//	if err := db.Select(columns).Find(&users).Error; err != nil {
+//		return nil, errutils.DBOperationsFailed(err.Error())
+//	} else {
+//		return users, nil
+//	}
+//}
+
+func (sec *userService) GetUsers(db *gorm.DB, query *jsfmt.Query) ([]*model.User, int, *errutils.ZinError) {
 	users := make([]*model.User, 0)
+	total := 0
+	Zerr := &errutils.ZinError{}
 	columns := []string{"ID", "Username", "Email", "Nickname", "Description", "Status", "Role", "created_time"}
-	if err := db.Select(columns).Find(&users).Error; err != nil {
-		return nil, errutils.DBOperationsFailed(err.Error())
-	} else {
-		return users, nil
+	if total, Zerr = query.Find(db.Select(columns), &model.User{}, &users); Zerr != nil {
+		return nil, 0, Zerr
 	}
+
+	return users, total, nil
 }
 
 func (sec *userService) GetUser(db *gorm.DB, username string) (*model.User, *errutils.ZinError) {

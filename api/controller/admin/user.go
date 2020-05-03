@@ -14,12 +14,16 @@ type User struct {
 }
 
 func (c *User) Get() *jsfmt.Response {
-	// TODO: 增加分页,查询条件
-	users, err := service.UserService.GetUsers(extend.DB())
+	queryStr := c.Ctx.FormValue("query")
+	query, Qerr := jsfmt.ReadQuery(queryStr)
+	if Qerr != nil {
+		return jsfmt.ErrorResponse(Qerr)
+	}
+	users, total, err := service.UserService.GetUsers(extend.DB(), query)
 	if err != nil {
 		return jsfmt.ErrorResponse(err)
 	}
-	return jsfmt.NormalResponse(users)
+	return jsfmt.QueryResponse(users, total)
 }
 
 func (c *User) Post() *jsfmt.Response {
