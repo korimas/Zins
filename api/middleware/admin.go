@@ -10,6 +10,7 @@ import (
 )
 
 func AdminAuth(ctx iris.Context) {
+	// TODO: cache invaild data
 	tokenID := ctx.GetHeader("X-User-Token")
 
 	token := cache.TokenCache.Get(tokenID)

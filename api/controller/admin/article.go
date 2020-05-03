@@ -7,6 +7,7 @@ import (
 	"github.com/zpdev/zins/model"
 	"github.com/zpdev/zins/product/extend"
 	"github.com/zpdev/zins/service"
+	"strconv"
 )
 
 type Article struct {
@@ -62,16 +63,32 @@ type ArticleDetail struct {
 	Ctx iris.Context
 }
 
-func (c *ArticleDetail) Get() (int, error) {
-	return c.Ctx.JSON(iris.Map{"user": "get"})
+func (c *ArticleDetail) Get() *jsfmt.Response {
+	articleIdStr := c.Ctx.Params().Get("article_id")
+	articleId, Cerr := strconv.Atoi(articleIdStr)
+	if Cerr != nil {
+		return jsfmt.ErrorResponse(errutils.ArticleNotFound())
+	}
+
+	article, err := service.ArticleService.GetArticle(extend.DB(), uint(articleId))
+	if err != nil {
+		return jsfmt.ErrorResponse(err)
+	}
+
+	return jsfmt.NormalResponse(article)
 }
 
-func (c *ArticleDetail) Post() (int, error) {
-	return c.Ctx.JSON(iris.Map{"user": "post"})
-}
+func (c *ArticleDetail) Delete() *jsfmt.Response {
+	articleIdStr := c.Ctx.Params().Get("article_id")
+	articleId, Cerr := strconv.Atoi(articleIdStr)
+	if Cerr != nil {
+		return jsfmt.ErrorResponse(errutils.ArticleNotFound())
+	}
+	if err := service.ArticleService.DeleteArticle(extend.DB(), uint(articleId)); err != nil {
+		return jsfmt.ErrorResponse(err)
+	}
+	return jsfmt.NormalResponse(nil)
 
-func (c *ArticleDetail) Delete() (int, error) {
-	return c.Ctx.JSON(iris.Map{"user": "delete"})
 }
 
 func (c *ArticleDetail) Put() (int, error) {

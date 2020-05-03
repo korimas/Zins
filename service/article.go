@@ -38,6 +38,13 @@ func (sec *articleService) CreateArticle(db *gorm.DB, article *model.Article) *e
 	return nil
 }
 
+func (sec *articleService) DeleteArticle(db *gorm.DB, articleId uint) *errutils.ZinError {
+	if err := db.Where("ID = ?", articleId).Delete(&model.Article{}).Error; err != nil {
+		return errutils.DBOperationsFailed(err.Error())
+	}
+	return nil
+}
+
 func (sec *articleService) DeleteArticles(db *gorm.DB, articles []model.Article) *errutils.ZinError {
 	needDeleteArticles := set.NewSet()
 	for i := 0; i < len(articles); i++ {
