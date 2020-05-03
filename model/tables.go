@@ -59,4 +59,5 @@ type Comment struct {
 	Content   string `gorm:"type:text"           json:"content"      form:"content"`    //评论内容
 	CreatedAt int64  `gorm:"not null"            json:"created_at"   form:"created_at"` //评论时间
 	UpdatedAt int64  `gorm:"not null"            json:"updated_at"   form:"updated_at"` //编辑于
+	ParentID  uint   `gorm:"not null"            json:"updated_at"   form:"updated_at"` //父评论编号
 }
