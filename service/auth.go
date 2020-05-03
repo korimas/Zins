@@ -19,7 +19,7 @@ type authService struct {
 func (sec *authService) Login(db *gorm.DB, user *model.User) (*model.User, *model.Token, *errutils.ZinError) {
 	var loginUser model.User
 	if db.Where("Username = ?", user.Username).First(&loginUser).RecordNotFound() {
-		return nil, nil, errutils.UserNotFound(user.Username)
+		return nil, nil, errutils.SpecifiedUserNotFound(user.Username)
 	}
 	encryptPass, enErr := base64.StdEncoding.DecodeString(loginUser.Password)
 	if enErr != nil {
@@ -33,7 +33,7 @@ func (sec *authService) Login(db *gorm.DB, user *model.User) (*model.User, *mode
 		return nil, nil, errutils.UserPassError()
 	}
 	loginUser.Password = ""
-	token, tErr := sec.genToken(db, user)
+	token, tErr := sec.genToken(db, &loginUser)
 	if tErr != nil {
 		return nil, nil, errutils.LoginFailed()
 	}
@@ -51,7 +51,7 @@ func (sec *authService) genToken(db *gorm.DB, user *model.User) (*model.Token, *
 	expiredTime := timeNow.Add(h)
 	token := model.Token{
 		Token:     tokenId.String(),
-		Username:  user.Username,
+		UserID:    user.ID,
 		Status:    cons.ACTIVE,
 		CreatedAt: timeNow.Unix(),
 		ExpiredAt: expiredTime.Unix(),

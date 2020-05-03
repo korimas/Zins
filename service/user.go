@@ -42,10 +42,7 @@ func (sec *userService) CreateUser(db *gorm.DB, user *model.User) *errutils.ZinE
 
 func (sec *userService) GetUsers(db *gorm.DB) ([]*model.User, *errutils.ZinError) {
 	users := make([]*model.User, 0)
-	columns := []string{
-		"Username", "Email", "Nickname",
-		"Avatar", "home_page", "Description",
-		"Status", "Role", "created_at"}
+	columns := []string{"ID", "Username", "Email", "Nickname", "Description", "Status", "Role", "created_at"}
 	if db.Select(columns).Find(&users).RecordNotFound() {
 		return nil, errutils.DBOperationsFailed()
 	} else {
@@ -54,13 +51,10 @@ func (sec *userService) GetUsers(db *gorm.DB) ([]*model.User, *errutils.ZinError
 }
 
 func (sec *userService) GetUser(db *gorm.DB, username string) (*model.User, *errutils.ZinError) {
-	columns := []string{
-		"Username", "Email", "Nickname",
-		"Avatar", "home_page", "Description",
-		"Status", "Role", "created_at"}
+	columns := []string{"ID", "Username", "Email", "Nickname", "Description", "Status", "Role", "created_at"}
 	var user model.User
 	if db.Select(columns).Where("Username = ?", username).First(&user).RecordNotFound() {
-		return nil, errutils.UserNotFound(username)
+		return nil, errutils.SpecifiedUserNotFound(username)
 	}
 	return &user, nil
 }

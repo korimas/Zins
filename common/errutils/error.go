@@ -45,13 +45,22 @@ func EmailAlreadyExit(email string) *ZinError {
 	}
 }
 
-func UserNotFound(username string) *ZinError {
+func SpecifiedUserNotFound(username string) *ZinError {
 	return &ZinError{
 		Errno: 1004,
 		Msg:   "User " + username + " not exist",
 		CnMsg: "用户" + username + "不存在",
 	}
 }
+
+func UserNotFound() *ZinError {
+	return &ZinError{
+		Errno: 1004,
+		Msg:   "User not exist",
+		CnMsg: "用户不存在",
+	}
+}
+
 func PasswordEncryptError() *ZinError {
 	return &ZinError{
 		Errno: 1005,

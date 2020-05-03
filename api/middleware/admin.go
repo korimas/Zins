@@ -23,9 +23,9 @@ func AdminAuth(ctx iris.Context) {
 		return
 	}
 
-	user := cache.UserCache.Get(token.Username)
+	user := cache.UserCache.Get(token.UserID)
 	if user == nil {
-		failedAuth(ctx, errutils.UserNotFound(token.Username))
+		failedAuth(ctx, errutils.UserNotFound())
 		return
 	}
 	if user.Role != cons.RoleAdmin {

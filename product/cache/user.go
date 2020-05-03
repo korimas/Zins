@@ -13,7 +13,7 @@ type userCache struct {
 	cache cache.LoadingCache
 }
 
-func (c *userCache) Get(username string) *model.User {
+func (c *userCache) Get(username uint) *model.User {
 	val, err := c.cache.Get(username)
 	if err != nil {
 		return nil
@@ -27,7 +27,7 @@ func (c *userCache) Get(username string) *model.User {
 func NewUserCache() *userCache {
 	load := func(k cache.Key) (value cache.Value, err error) {
 		user := &model.User{}
-		if extend.DB().Where("Username = ?", k.(string)).First(user).RecordNotFound() {
+		if extend.DB().Where("ID = ?", k.(uint)).First(user).RecordNotFound() {
 			value = nil
 		} else {
 			value = user
