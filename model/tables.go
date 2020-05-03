@@ -18,7 +18,7 @@ type User struct {
 
 type Token struct {
 	Token     string `gorm:"size:64;primary_key;"       json:"token"       form:"token"`      //Token串
-	UserID    uint   `gorm:"size:64;"                   json:"-"           form:"-"`          //用户名
+	UserID    uint   `gorm:"size:64;"                   json:"-"           form:"-"`          //用户ID
 	Status    string `gorm:"size:32"                    json:"status"      form:"status"`     //状态
 	CreatedAt int64  `gorm:"not null"                   json:"created_at"  form:"created_at"` //创建于
 	ExpiredAt int64  `gorm:"not null"                   json:"expired_at"  form:"expired_at"` //过期于
